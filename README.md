@@ -131,13 +131,6 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=5
 `debounce-5ms`
 
 ```ini
-DEBOUNCE_TYPE = sym_defer_pk
-DEBOUNCE = 5
-```
-
-`debounce-5ms`
-
-```ini
 # No options set. Equivalent to
 DEBOUNCE_TYPE = sym_defer_g
 DEBOUNCE = 5
@@ -159,8 +152,6 @@ DEBOUNCE = 5
 ```c
 MinDebounceTime = 7;
 ```
-
-(The default is 6, but the Hexgears configurator is broken, so I can't change this...)
 
 ## Credits
 
