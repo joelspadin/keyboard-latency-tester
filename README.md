@@ -95,9 +95,53 @@ For example, `results/zmk/nrf5340dk-zmk-uno/usb-1000hz-debounce-5ms` would be:
 - Bluetooth keyboards: `ble-<connection_interval>`, e.g. `ble-15ms`
 - USB keyboards: `usb-<polling_rate>`, e.g. `usb-1000hz`
 
+#### ZMK
+
+USB poll rate defaults to 1000 Hz but can be changed with:
+
+```ini
+CONFIG_USB_HID_POLL_INTERVAL_MS=8  # poll rate = 1000 Hz/value
+```
+
+BLE connection interval defaults to 7.5-15 ms. It can be forced to a specific interval by changing the min and max values:
+
+```ini
+CONFIG_BT_PERIPHERAL_PREF_MIN_INT=6 # interval = value * 1.25 ms
+CONFIG_BT_PERIPHERAL_PREF_MAX_INT=6 # interval = value * 1.25 ms
+```
+
 ### Debounce
 
 Debounce algorithms differ slightly between firmwares. The debounce types refer to the following settings.
+
+#### KLL
+
+[KLL debounce documentation](https://github.com/kiibohd/controller/blob/master/Scan/Devices/MatrixARMPeriodic/README.md)
+
+`debounce-7ms`
+
+```c
+MinDebounceTime = 7;
+```
+
+#### QMK
+
+[QMK debounce documentation](https://docs.qmk.fm/#/feature_debounce_type?id=types-of-debounce-algorithms)
+
+`debounce-5ms`
+
+```ini
+# No options set. Equivalent to
+DEBOUNCE_TYPE = sym_defer_g
+DEBOUNCE = 5
+```
+
+`debounce-eager-defer-5ms`
+
+```ini
+DEBOUNCE_TYPE = asym_eager_defer_pk
+DEBOUNCE = 5
+```
 
 #### ZMK
 
@@ -122,35 +166,6 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=5
 ```ini
 CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=1
 CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=5
-```
-
-#### QMK
-
-[QMK debounce documentation](https://docs.qmk.fm/#/feature_debounce_type?id=types-of-debounce-algorithms)
-
-`debounce-5ms`
-
-```ini
-# No options set. Equivalent to
-DEBOUNCE_TYPE = sym_defer_g
-DEBOUNCE = 5
-```
-
-`debounce-eager-defer-5ms`
-
-```ini
-DEBOUNCE_TYPE = asym_eager_defer_pk
-DEBOUNCE = 5
-```
-
-#### KLL
-
-[KLL debounce documentation](https://github.com/kiibohd/controller/blob/master/Scan/Devices/MatrixARMPeriodic/README.md)
-
-`debounce-7ms`
-
-```c
-MinDebounceTime = 7;
 ```
 
 ## Credits
