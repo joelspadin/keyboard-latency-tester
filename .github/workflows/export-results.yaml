@@ -1,13 +1,12 @@
 name: Export Results
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - "*"
 
 jobs:
-  build:
+  export:
     runs-on: ubuntu-latest
     permissions:
       contents: write
