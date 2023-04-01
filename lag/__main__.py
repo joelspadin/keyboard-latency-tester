@@ -21,6 +21,7 @@ def outfile(path: Optional[Path]):
     if path is None:
         yield sys.stdout
     else:
+        path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("w", encoding="utf-8") as f:
             yield f
 

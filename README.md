@@ -136,7 +136,7 @@ DEBOUNCE_TYPE = sym_defer_g
 DEBOUNCE = 5
 ```
 
-`debounce-eager-defer-5ms`
+`debounce-eager-5ms`
 
 ```ini
 DEBOUNCE_TYPE = asym_eager_defer_pk
@@ -154,19 +154,31 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=5
 CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=5
 ```
 
-`debounce-0ms-5ms`
+`debounce-eager-5ms`
 
 ```ini
 CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=0
 CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=5
 ```
 
-`debounce-1ms-5ms`
+`debounce-eager-1ms-5ms`
 
 ```ini
 CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=1
 CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=5
 ```
+
+### Charting Results
+
+The `results` folder contains a Jupyter notebook for visualizing the results.
+
+First, install dependencies:
+
+```
+pip install -r requirements.chart.txt
+```
+
+Then open [`results/chart.ipynb`](results/chart.ipynb) in [Visual Studio Code](https://code.visualstudio.com/) or [Jupyter](https://docs.jupyter.org/en/latest/install.html) and run all cells.
 
 ## Credits
 
