@@ -1,0 +1,35 @@
+name: Export Results
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      - name: install dependencies
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install -r requirements.chart.txt
+          pip3 install nbconvert
+
+      - name: export
+        run: jupyter nbconvert results/chart.ipynb --to html
+
+      - name: release
+        uses: softprops/action-gh-release@v1
+        with:
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          files: |
+            results/chart.html
