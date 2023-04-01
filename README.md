@@ -1,5 +1,27 @@
 # Keyboard Latency Tester
 
+Keyboard latency testing script based on [LagBox](https://hci.ur.de/publications/bockes_2018_lagbox)
+
+## Test Methodology
+
+This repo contains a Python program which runs on a Rasbperry Pi. It uses a GPIO to control an optocoupler which is connected across the pins of a keyboard switch. Setting the GPIO on connects the switch pins together, simulating a key press. Setting the GPIO off disconnects the pins, simulating a key release.
+
+It first triggers one key press and watches for a key press event on the selected input device and learns which key code is triggered.
+
+It then runs the following process the number of iterations specified with `-n` (default 100):
+
+1. Wait a random amount of time.
+2. Record the current time and simulate a key press by setting the trigger GPIO on.
+3. Wait for a key press event for the correct key.
+4. Record the difference in time between the trigger GPIO being set and the key event.
+5. Release the key by setting the trigger GPIO off.
+
+The script creates a list of delays evenly distributed between `--tmin` (default 50 ms) and `--tmax` (default 1 s), then randomly assigns a delay to each iteration. This attempts to ensure that the latency tester does not run in lock step with any process on the keyboard such as key scanning, which might artificially increase or decrease the tested latency compared to real-world usage.
+
+For step 2, it records the time before and after the call to change the GPIO and uses the average. The potential error +/- that average value is recorded in a second column for each sample.
+
+For step 4, it uses the event timestamp reported by the OS, so it isn't affected by how long it takes to handle each event.
+
 ## Hardware Setup
 
 This project uses identical hardware to [LagBox](https://hci.ur.de/projects/latency/howto).
@@ -13,7 +35,8 @@ Connect pin 1 of the optocoupler through a 150 Ohm resistor to a GPIO pin on the
 Connect pins 3 and 4 of the optocoupler to either side of a switch on the keyboard to test.
 
 ![Circuit diagram](doc/circuit.png)
--+
+
+If the keyboard has hotswap sockets, you can remove a switch and push thin wires into the sockets. If not, you will typically need to disassemble the keyboard to access the back of its PCB and tape a pair of wires to a switch's solder joints.
 
 ## Software Setup
 
@@ -57,24 +80,6 @@ For a full list of options, run:
 ./test --help
 ```
 
-## Test Methodology
-
-This script uses the optocoupler to simulate a press of the attached switch. It then watches for a key press event on the selected input device and learns which key code is triggered.
-
-It then runs the following process the number of iterations specified with `-n` (default 100):
-
-1. Wait a random amount of time.
-2. Record the current time and simulate a key press by setting the trigger GPIO on.
-3. Wait for a key press event for the correct key.
-4. Record the difference in time between the trigger GPIO being set and the key event.
-5. Release the key by setting the trigger GPIO off.
-
-For step 1, the script creates a list of delays evenly distributed between `--tmin` (default 50 ms) and `--tmax` (default 1 s), then randomly assigns a delay to each iteration. This attempts to ensure that the latency tester does not run in lock step with any process on the keyboard such as key scanning, which might artificially increase or decrease the tested latency compared to real-world usage.
-
-For step 2, the script records the time before and after the call to change the GPIO and uses the average. The potential error +/- that average value is recorded in a second column for each sample.
-
-For step 4, the script uses the event timestamp reported by the OS, so it isn't affected by how long it takes to handle each event.
-
 ## Results
 
 The `results` folder contains test results for various keyboards. Files are organized as follows:
@@ -83,9 +88,9 @@ The `results` folder contains test results for various keyboards. Files are orga
 results/<firmware>/<keyboard>/<interface>-<interface_speed>[-<debounce_type>].csv
 ```
 
-For example, `results/zmk/nrf5340dk-zmk-uno/usb-1000hz-debounce-5ms` would be:
+For example, `results/ZMK/nRF5340-DK-ZMK-Uno/usb-1000hz-debounce-5ms` would be:
 
-- ZMK Firmware
+- [ZMK Firmware](https://zmk.dev/)
 - [nRF5340 DK](https://www.nordicsemi.com/Products/Development-hardware/nRF5340-DK) with [ZMK Uno](https://github.com/zmkfirmware/zmk-uno) shield
 - Keyboard connected via USB with 1000 Hz polling
 - Keyboard debounce set to 5 milliseconds
@@ -94,6 +99,14 @@ For example, `results/zmk/nrf5340dk-zmk-uno/usb-1000hz-debounce-5ms` would be:
 
 - Bluetooth keyboards: `ble-<connection_interval>`, e.g. `ble-15ms`
 - USB keyboards: `usb-<polling_rate>`, e.g. `usb-1000hz`
+
+#### QMK
+
+USB poll rate defaults to 1000 Hz but can be changed with:
+
+```c
+#define USB_POLLING_INTERVAL_MS 8  // poll rate = 1000 Hz/value
+```
 
 #### ZMK
 
@@ -106,8 +119,8 @@ CONFIG_USB_HID_POLL_INTERVAL_MS=8  # poll rate = 1000 Hz/value
 BLE connection interval defaults to 7.5-15 ms. It can be forced to a specific interval by changing the min and max values:
 
 ```ini
-CONFIG_BT_PERIPHERAL_PREF_MIN_INT=6 # interval = value * 1.25 ms
-CONFIG_BT_PERIPHERAL_PREF_MAX_INT=6 # interval = value * 1.25 ms
+CONFIG_BT_PERIPHERAL_PREF_MIN_INT=6  # interval = value * 1.25 ms
+CONFIG_BT_PERIPHERAL_PREF_MAX_INT=6  # interval = value * 1.25 ms
 ```
 
 ### Debounce
@@ -178,7 +191,7 @@ First, install dependencies:
 pip install -r requirements.chart.txt
 ```
 
-Then open [`results/chart.ipynb`](results/chart.ipynb) in [Visual Studio Code](https://code.visualstudio.com/) or [Jupyter](https://docs.jupyter.org/en/latest/install.html) and run all cells.
+Then open [`results/chart.ipynb`](results/chart.ipynb) in [Visual Studio Code](https://code.visualstudio.com/) or [Jupyter](https://docs.jupyter.org/en/latest/install.html).
 
 ## Credits
 
