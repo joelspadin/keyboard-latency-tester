@@ -82,7 +82,11 @@ For a full list of options, run:
 
 ## Results
 
-The `results` folder contains test results for various keyboards. Files are organized as follows:
+The `results` folder contains test results for various keyboards.
+
+For aggregate results and latency rankings, see [`results/chart.ipynb`](results/chart.ipynb).
+
+The results for individual keyboards are organized as follows:
 
 ```
 results/<firmware>/<keyboard>/<interface>-<interface_speed>[-<debounce_type>].csv
@@ -94,6 +98,8 @@ For example, `results/ZMK/nRF5340-DK-ZMK-Uno/usb-1000hz-debounce-5ms` would be:
 - [nRF5340 DK](https://www.nordicsemi.com/Products/Development-hardware/nRF5340-DK) with [ZMK Uno](https://github.com/zmkfirmware/zmk-uno) shield
 - Keyboard connected via USB with 1000 Hz polling
 - Keyboard debounce set to 5 milliseconds
+
+Each keyboard was tested using the script's default settings. Additional information about each test setup can be found in README.md files in each keyboard folder.
 
 ### Interface
 
@@ -116,7 +122,7 @@ USB poll rate defaults to 1000 Hz but can be changed with:
 CONFIG_USB_HID_POLL_INTERVAL_MS=8  # poll rate = 1000 Hz/value
 ```
 
-BLE connection interval defaults to 7.5-15 ms. It can be forced to a specific interval by changing the min and max values:
+BLE connection interval defaults to 7.5-15 ms, where the host OS gets to pick any value within the range. It can be forced to a specific interval by changing the min and max values:
 
 ```ini
 CONFIG_BT_PERIPHERAL_PREF_MIN_INT=6  # interval = value * 1.25 ms
@@ -163,6 +169,7 @@ DEBOUNCE = 5
 `debounce-5ms`
 
 ```ini
+# No options set. Equivalent tos
 CONFIG_ZMK_KSCAN_DEBOUNCE_PRESS_MS=5
 CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=5
 ```
@@ -185,16 +192,16 @@ CONFIG_ZMK_KSCAN_DEBOUNCE_RELEASE_MS=5
 
 The `results` folder contains a Jupyter notebook for visualizing the results.
 
-First, install dependencies:
+To update the notebook with new results, first install dependencies:
 
 ```
 pip install -r requirements.chart.txt
 ```
 
-Then open [`results/chart.ipynb`](results/chart.ipynb) in [Visual Studio Code](https://code.visualstudio.com/) or [Jupyter](https://docs.jupyter.org/en/latest/install.html).
+Then open [`results/chart.ipynb`](results/chart.ipynb) in [Visual Studio Code](https://code.visualstudio.com/) or [Jupyter](https://docs.jupyter.org/en/latest/install.html) and run all cells.
 
 ## Credits
 
-Testing hardware is taken from [LagBox](https://hci.ur.de/projects/latency/howto) and the operation of the test script was derived from the [LagBox software documentation](https://github.com/PDA-UR/LagBox/blob/master/README.md).
+Testing hardware is taken from [LagBox](https://hci.ur.de/projects/latency/howto) and the test methodology was derived from the [LagBox software documentation](https://github.com/PDA-UR/LagBox/blob/master/README.md).
 
 Keyboard event handling is based on the Python [keyboard](https://github.com/boppreh/keyboard) library.
