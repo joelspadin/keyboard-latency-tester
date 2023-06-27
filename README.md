@@ -103,8 +103,9 @@ Each keyboard was tested using the script's default settings. Additional informa
 
 ### Interface
 
-- Bluetooth keyboards: `ble-<connection_interval>`, e.g. `ble-15ms`
-- USB keyboards: `usb-<polling_rate>`, e.g. `usb-1000hz`
+- Bluetooth: `ble-<connection_interval>`, e.g. `ble-15ms`
+- USB: `usb-<polling_rate>`, e.g. `usb-1000hz`
+- Logitech Lightspeed USB receiver: `lightspeed-<usb_polling_rate>`, e.g. `lightspeed-1000hz`
 
 #### QMK
 
@@ -128,6 +129,28 @@ BLE connection interval defaults to 7.5-15 ms, where the host OS gets to pick an
 CONFIG_BT_PERIPHERAL_PREF_MIN_INT=6  # interval = value * 1.25 ms
 CONFIG_BT_PERIPHERAL_PREF_MAX_INT=6  # interval = value * 1.25 ms
 ```
+
+#### BLE Connection Interval
+
+To check the BLE connection interval being used, open a terminal and run
+
+```sh
+sudo btmon
+```
+
+then cycle power on the keyboard and watch the events as it connects. You should see an event that looks like this:
+
+```
+> HCI Event: LE Meta Event (0x3e) plen 10
+      LE Connection Update Complete (0x03)
+        Status: Success (0x00)
+        Handle: 64
+        Connection interval: 15.00 msec (0x000c)
+        Connection latency: 30 (0x001e)
+        Supervision timeout: 4000 msec (0x0190)
+```
+
+In this case, the connection interval was 15 ms.
 
 ### Debounce
 

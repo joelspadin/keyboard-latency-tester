@@ -8,11 +8,12 @@ import matplotlib.pyplot as plt
 import matplotlib.patheffects as patheffects
 import pandas as pd
 
-RESULTS_DIR = Path().resolve()
+RESULTS_DIR = Path(__file__).parent
 NAME_REPLACEMENTS = {
     r"[-_]+": " ",
     r"ble": "BLE",
     r"usb": "USB",
+    r"lightspeed": "Lightspeed",
     r"(?<=\d)hz": " Hz",
 }
 
