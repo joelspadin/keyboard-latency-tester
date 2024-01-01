@@ -38,7 +38,9 @@ Connect pins 3 and 4 of the optocoupler to either side of a switch on the keyboa
 
 ![Circuit diagram](doc/circuit.png)
 
-If the keyboard has hotswap sockets, you can remove a switch and push thin wires into the sockets. If not, you will typically need to disassemble the keyboard to access the back of its PCB and tape a pair of wires to a switch's solder joints.
+If the keyboard has hotswap sockets, you can take an extra, sacrificial switch, open it, remove the spring and slider, and solder wires onto the two contacts inside. Use heat shrink tubing or something else nonconductive to keep the contacts from touching. 
+
+If not, you will typically need to disassemble the keyboard to access the back of its PCB and tape a pair of wires to a switch's solder joints (you can also do this with a hotswap keyboard if you don't want to destroy a switch).
 
 ## Software Setup
 
