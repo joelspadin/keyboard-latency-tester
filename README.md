@@ -2,9 +2,11 @@
 
 Keyboard latency testing script based on [LagBox](https://hci.ur.de/publications/bockes_2018_lagbox)
 
+If you test your own keyboards with this, please create a PR and contribute your results!
+
 ## Test Methodology
 
-This repo contains a Python program which runs on a Rasbperry Pi. It uses a GPIO to control an optocoupler which is connected across the pins of a keyboard switch. Setting the GPIO on connects the switch pins together, simulating a key press. Setting the GPIO off disconnects the pins, simulating a key release.
+This repo contains a Python program which runs on a Rasbperry Pi. It uses a GPIO to control an optocoupler which is connected across the pins of a keyboard switch. Setting the GPIO on connects the switch pins together, simulating a key press. Setting the GPIO off disconnects the pins, simulating a key release. It uses this to measure the latency between when a switch actuates and when the OS registers a key press event. The recorded latency is then the latency of the keyboard plus the latency of the OS. Ideally, we would not want to include the OS latency, but this is difficult without more specialized hardware.
 
 It first triggers one key press and watches for a key press event on the selected input device and learns which key code is triggered.
 
@@ -20,13 +22,13 @@ The script creates a list of delays evenly distributed between `--tmin` (default
 
 For step 2, it records the time before and after the call to change the GPIO and uses the average. The potential error +/- that average value is recorded in a second column for each sample.
 
-For step 4, it uses the event timestamp reported by the OS, so it isn't affected by how long it takes to handle each event.
+For step 4, it uses the event timestamp reported by the OS, so it isn't affected by how long the script takes to handle each event.
 
 ## Hardware Setup
 
 This project uses identical hardware to [LagBox](https://hci.ur.de/projects/latency/howto).
 
-- Rasbperry Pi
+- Rasbperry Pi (with wireless if you want to test Bluetooth latency)
 - A817 optocoupler (or equivalent)
 - 150 ohm resistor
 
