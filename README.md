@@ -1,6 +1,19 @@
 # Keyboard Latency Tester
 
 Keyboard latency testing script based on [LagBox](https://hci.ur.de/publications/bockes_2018_lagbox)
+## Browser-Based Keyboard Testing (Quick Checks)
+
+For quick, no-install validation of keyboard input behavior, browser-based tools can be useful before running hardware-level latency measurements.
+
+These tools allow users to:
+- Check keyboard polling rate (Hz) in real time
+- Detect unstable or fluctuating input behavior
+- Verify basic responsiveness without installing software
+
+Example:
+- Online keyboard polling rate test (runs fully client-side):  
+  https://pollingratetester.com/keyboard-polling-rate-test/
+
 
 If you test your own keyboards with this, please create a PR and contribute your results!
 
